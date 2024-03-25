@@ -1,6 +1,6 @@
 /* CUSTOM FONT FAMILY */
 @font-face {
-  font-family: "Segoe UI";
+  font-family: "Segoe";
   src:
     url("/public/font/Segoe UI.woff2") format("woff2"),
     url("/public/font/Segoe UI.woff2") format("woff");
@@ -9,7 +9,7 @@
 }
 
 @font-face {
-  font-family: "Segoe UI";
+  font-family: "Segoe";
   src:
     url("/public/font/Segoe UI Bold.woff2") format("woff2"),
     url("/public/font/Segoe UI Bold.woff2") format("woff");
@@ -43,9 +43,14 @@ html {
   scroll-behavior: smooth;
 }
 
-body {
-  font-family: "Segoe UI", sans-serif;
+/* body {
+  font-family: "Segoe", sans-serif;
   font-weight: normal;
+} */
+@layer base {
+    body {
+        @apply relative z-1 bg-whiten font-Segoe text-base font-normal text-body;
+    }
 }
 
 @layer utilities {
