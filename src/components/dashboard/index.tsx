@@ -10,24 +10,19 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import ProgressCard from "../card";
+import ProductTable from "../table";
+import { mockData } from "@/utils";
 
 const Dashboard: React.FC = () => {
   return (
     <>
       <GradientChart />
-      <div className="mt-3 w-[40%]">
+      <div className="mt-3 w-full md:w-[40%]">
         <ProgressCard />
       </div>
-      {/* <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-        <ChartOne />
-        <ChartTwo />
-        <ChartThree />
-        <MapOne />
-        <div className="col-span-12 xl:col-span-8">
-          <TableOne />
-        </div>
-        <ChatCard />
-      </div> */}
+      <div>
+        <ProductTable productData={mockData} />
+      </div>
     </>
   );
 };

@@ -124,7 +124,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <ul className="mb-6 flex flex-col gap-1.5">
               <li>
                 <Link
-                  href="/payment"
+                  href="#"
                   className={`group relative flex items-center gap-2.5 rounded-sm px-6 py-2 font-medium text-body duration-300 ease-in-out hover:bg-[#0296ff4f] hover:border-l-4 hover:border-blue dark:hover:bg-meta-4 ${
                     pathname.includes("payment") &&
                     "bg-[#0294FF73] dark:bg-meta-4 border-l-4 border-blue"
@@ -137,7 +137,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
               <li>
                 <Link
-                  href="/profile"
+                  href="#"
                   className={`group relative flex items-center gap-2.5 rounded-sm px-6 py-2 font-medium text-body duration-300 ease-in-out hover:bg-[#0296ff4f] hover:border-l-4 hover:border-blue dark:hover:bg-meta-4 ${
                     pathname.includes("profile") &&
                     "bg-[#0294FF73] dark:bg-meta-4 border-l-4 border-blue"
@@ -150,7 +150,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
               <li>
                 <Link
-                  href="/unreconciled"
+                  href="#"
                   className={`group relative flex items-center gap-2.5 rounded-sm px-6 py-2 font-medium text-body duration-300 ease-in-out hover:bg-[#0296ff4f] hover:border-l-4 hover:border-blue dark:hover:bg-meta-4 ${
                     pathname.includes("unreconciled") &&
                     "bg-[#0294FF73] dark:bg-meta-4 border-l-4 border-blue"
@@ -163,7 +163,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
               <li>
                 <Link
-                  href="/settlement"
+                  href="#"
                   className={`group relative flex items-center gap-2.5 rounded-sm px-6 py-2 font-medium text-body duration-300 ease-in-out hover:bg-[#0296ff4f] hover:border-l-4 hover:border-blue dark:hover:bg-meta-4 ${
                     pathname.includes("settlement") &&
                     "bg-[#0294FF73] dark:bg-meta-4 border-l-4 border-blue"
@@ -181,9 +181,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <ul className="mb-6 flex flex-col gap-1.5">
               <li>
                 <Link
-                  href="/calendar"
+                  href="#"
                   className={`group relative flex items-center gap-2.5 rounded-sm px-6 py-2 font-medium text-body duration-300 ease-in-out hover:bg-[#0296ff4f] hover:border-l-4 hover:border-blue dark:hover:bg-meta-4 ${
-                    pathname.includes("calendar") &&
+                    pathname.includes("order") &&
                     "bg-[#0294FF73] dark:bg-meta-4 border-l-4 border-blue"
                   }`}
                 >
@@ -194,7 +194,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
               <li>
                 <Link
-                  href="/pending"
+                  href="#"
                   className={`group relative flex items-center gap-2.5 rounded-sm px-6 py-2 font-medium text-body duration-300 ease-in-out hover:bg-[#0296ff4f] hover:border-l-4 hover:border-blue dark:hover:bg-meta-4 ${
                     pathname.includes("pending") &&
                     "bg-[#0294FF73] dark:bg-meta-4 border-l-4 border-blue"
@@ -207,9 +207,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
               <li>
                 <Link
-                  href="/tables"
+                  href="#"
                   className={`group relative flex items-center gap-2.5 rounded-sm px-6 py-2 font-medium text-body duration-300 ease-in-out hover:bg-[#0296ff4f] hover:border-l-4 hover:border-blue dark:hover:bg-meta-4 ${
-                    pathname.includes("tables") &&
+                    pathname.includes("order") &&
                     "bg-[#0294FF73] dark:bg-meta-4 border-l-4 border-blue"
                   }`}
                 >
@@ -221,7 +221,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
               <li>
                 <Link
-                  href="/merchant"
+                  href="#"
                   className={`group relative flex items-center gap-2.5 rounded-sm px-6 py-2 font-medium text-body duration-300 ease-in-out hover:bg-[#0296ff4f] hover:border-l-4 hover:border-blue dark:hover:bg-meta-4 ${
                     pathname.includes("merchant") &&
                     "bg-[#0294FF73] dark:bg-meta-4 border-l-4 border-blue"

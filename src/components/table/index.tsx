@@ -2,8 +2,8 @@
 import React, {
   HTMLProps,
   useReducer,
-  useState,
   useEffect,
+  useState,
   ReactNode,
 } from "react";
 import {
@@ -14,67 +14,95 @@ import {
   getExpandedRowModel,
   ColumnDef,
   flexRender,
+  PaginationState,
 } from "@tanstack/react-table";
-import { IoMdRefresh } from "react-icons/io";
+import { IoIosSearch, IoMdRefresh } from "react-icons/io";
+import CustomSelect from "../custom";
 
 interface TableProps {
   productData: any[];
 }
 
+interface InitialsCircleProps {
+  initials: string;
+}
+
+const InitialsCircle: React.FC<InitialsCircleProps> = ({ initials }) => {
+  return (
+    <div className="h-10 w-10 flex items-center justify-center bg-newText rounded-full">
+      <span className="text-white  font-[30px]">{initials}</span>
+    </div>
+  );
+};
+
 const ProductTable: React.FC<TableProps> = ({ productData }) => {
   const rerender = useReducer(() => ({}), {})[1];
+  const [globalFilter, setGlobalFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string | null>(null);
+
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
   const columns = React.useMemo<ColumnDef<any>[]>(
     () => [
       {
-        accessorKey: "Item Type",
-        header: ({ table }) => (
-          <>
-            <IndeterminateCheckbox
-              {...{
-                checked: table.getIsAllRowsSelected(),
-                indeterminate: table.getIsSomeRowsSelected(),
-                onChange: table.getToggleAllRowsSelectedHandler(),
-              }}
-            />{" "}
-            Item Type
-          </>
-        ),
+        accessorKey: "product",
+        header: () => <span>Item Type</span>,
         cell: ({ row, getValue }) => (
           <div>
-            <div className="flex items-center gap-2">
-              {/* <IndeterminateCheckbox
-                {...{
-                  checked: row.getIsSelected(),
-                  indeterminate: row.getIsSomeSelected(),
-                  onChange: row.getToggleSelectedHandler(),
-                }}
-              />{" "} */}
-              {getValue() as ReactNode}
+            <div className="flex items-center gap-2 ">
+              <InitialsCircle initials={"VW"} />
+              <span className="text-[#414042]">{getValue() as ReactNode}</span>
             </div>
           </div>
         ),
       },
       {
-        accessorFn: (row) => row.description,
-        id: "description",
-        cell: (info) => info.getValue(),
+        accessorKey: "price",
+        cell: (info) => (
+          <span className="text-newText text-sm">
+            $ {info.getValue() as ReactNode}
+          </span>
+        ),
         header: () => <span>Price</span>,
       },
 
       {
-        accessorKey: "quantity",
+        accessorKey: "serialNumber",
         header: () => <span>Transaction No</span>,
+        cell: (info) => (
+          <span className="text-newText text-sm">
+            {info.getValue() as ReactNode}
+          </span>
+        ),
       },
       {
-        accessorKey: "quantity",
+        accessorKey: "time",
         header: () => <span>Time</span>,
+        cell: (info) => (
+          <span className="text-newText text-sm">
+            {info.getValue() as ReactNode}
+          </span>
+        ),
       },
       {
-        accessorKey: "quantity",
+        accessorKey: "status",
         header: () => <span>Status</span>,
+        cell: (info) => {
+          const status = info.getValue() as ReactNode;
+          return (
+            <span className=" text-sm">{getStatusBlock(status as string)}</span>
+          );
+        },
+        filterFn: (row, id, value) => {
+          if (value === null || value === "") return true;
+          //@ts-ignore
+          return row.getValue(id).toLowerCase() === value.toLowerCase();
+        },
       },
     ],
-    []
+    [statusFilter]
   );
 
   const [data, setData] = useState<any[]>([]);
@@ -87,41 +115,91 @@ const ProductTable: React.FC<TableProps> = ({ productData }) => {
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
+    globalFilterFn: (row, columnIds) => {
+      const searchValue = globalFilter.toLowerCase();
+      //@ts-ignore
+      return columnIds.some((columnId: string) => {
+        const value = row.getValue(columnId);
+        return (
+          value !== undefined &&
+          //@ts-ignore
+          value.toString().toLowerCase().includes(searchValue)
+        );
+      });
+    },
     debugTable: true,
+    state: {
+      globalFilter,
+      pagination,
+    },
+    onPaginationChange: setPagination,
+    onGlobalFilterChange: setGlobalFilter,
   });
+
   useEffect(() => {
     setData(productData);
   }, [productData]);
+
   return (
     <div className="overflow-x-auto xxs:hidden md:block">
-      <div
-        onClick={refreshData}
-        className="w-full flex items-center justify-between bg-[#fff] h-10 rounded-t-md px-4 mt-10 border-slate-200 border-b"
-      >
-        <div className="flex items-center gap-1 text-[16px] leading-[28px] text-[#464F54] cursor-pointer">
-          <IoMdRefresh size={23} className="-rotate-180" />
-          Refresh
-        </div>
-        <div className="flex items-center gap-3">
-          <span className="flex items-center gap-1">
-            0{table.getState().pagination.pageIndex + 1} of 0
-            {table.getPageCount()}
-          </span>
+      <div className="mt-10 mb-3">
+        <h1 className="text-xl text-[#262626]">Payments</h1>
+      </div>
+      <div className=" flex items-center justify-between  rounded-t-md  mb-5 w-full">
+        <div className="flex items-center justify-between gap-4 w-[90%]">
+          <div className="flex items-center gap-8">
+            <div
+              // onClick={refreshData}
+              className="flex items-center gap-1 text-[16px] leading-[28px] text-[#464F54] cursor-pointer  "
+            >
+              <div className="flex items-center gap-1 text-xs text-[#262626]w-full">
+                Showing{" "}
+                <select
+                  value={table.getState().pagination.pageSize}
+                  onChange={(e) => {
+                    table.setPageSize(Number(e.target.value));
+                  }}
+                  className="text-blue focus:outline-none bg-[#F1F5F9]"
+                >
+                  {[10, 20, 30, 40, 50].map((pageSize) => (
+                    <option key={pageSize} value={pageSize}>
+                      {pageSize}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="text-xs text-[#262626]">out of </div>
+              <div className="text-xs text-[#262626]">
+                {table.getPageCount()} Payments
+              </div>
+            </div>
+            <div className="relative">
+              <button className="absolute left-0 top-1/2 text-[#787878] -translate-y-1/2 text-sm">
+                <IoIosSearch />
+              </button>
+              <DebouncedInput
+                type="text"
+                value={globalFilter || ""}
+                //@ts-ignore
+                onChange={(e) => setGlobalFilter(e.target?.value)}
+                placeholder="Search payments..."
+                className="border-b border-gray-[#787878]  px-2 py-1 bg-transparent pl-6 pr-4 font-light focus:outline-none placeholder:text-xs placeholder:text-[#787878] placeholder:font-extralight"
+              />
+            </div>
+          </div>
+
           <div className="flex items-center gap-3">
-            <button
-              className="w-5 h-5 rounded-full bg-slate-50 flex items-center justify-center text-slate-500 cursor-pointer"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
+            <span className="text-xs text-[#262626]">Show</span>
+            <select
+              className="border border-newText text-sm text-newText px-2 py-1 focus:outline-none"
+              value={statusFilter || ""}
+              onChange={(e) => setStatusFilter(e.target.value || null)}
             >
-              {"<"}
-            </button>
-            <button
-              className=" w-5 h-5 rounded-full bg-slate-50 flex items-center justify-center text-slate-500 cursor-pointer"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              {">"}
-            </button>
+              <option value="">All</option>
+              <option value="reconciled">Reconciled</option>
+              <option value="un-reconciled">Un-reconciled</option>
+              <option value="pending">Pending</option>
+            </select>
           </div>
         </div>
       </div>
@@ -129,18 +207,18 @@ const ProductTable: React.FC<TableProps> = ({ productData }) => {
         className="appearance-none bg-white min-w-full  rounded-md"
         id="my-table"
       >
-        <thead className="bg-[#fff] appearance-none">
+        <thead className="bg-[#EAEEF0] appearance-none">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
                   <th
-                    className="font-normal text-sm text-primary py-3 text-left whitespace-nowrap px-4 border-r border-slate-50"
+                    className="font-normal text-sm text-primary py-3 text-left whitespace-nowrap px-4 "
                     key={header.id}
                     colSpan={header.colSpan}
                   >
                     {header.isPlaceholder ? null : (
-                      <div className="flex items-center gap-2 text-[16px] leading-[24.4px] text-[#222D33]">
+                      <div className="flex items-center gap-2 text-sm text-newText ">
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext()
@@ -179,31 +257,100 @@ const ProductTable: React.FC<TableProps> = ({ productData }) => {
           })}
         </tbody>
       </table>
+      <div className="flex items-center justify-between w-full my-4 ">
+        <div>
+          <span className="flex items-center gap-1 text-xs text-[#262626]">
+            Showing 0{table.getState().pagination.pageIndex + 1} out of 0
+            {table.getPageCount()} Payments
+          </span>
+        </div>
+        <div className="flex items-center gap-3 ">
+          <button
+            className=" h-5 p-1 text-xs bg-white border flex items-center justify-center text-black cursor-pointer"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {"Previous"}
+          </button>
+
+          <button
+            className="  h-5 p-1 text-xs bg-white flex items-center justify-center text-black cursor-pointer border"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            {"Next"}
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
 
 export default ProductTable;
 
-function IndeterminateCheckbox({
-  indeterminate,
-  className = "",
-  ...rest
-}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
-  const ref = React.useRef<HTMLInputElement>(null!);
+interface StatusBlockProps {
+  status: "reconcilled" | "un-reconcilled" | "pending";
+}
+
+const statusStyles: Record<string, string> = {
+  reconciled: "border-newText text-success border",
+  "un-reconciled": "border-newText text-newText border",
+  pending: "border-newText text-warning border",
+};
+
+const getStatusBlock = (statusText: string) => {
+  const styleClass = statusStyles[statusText.toLowerCase()];
+  if (styleClass) {
+    return (
+      <div
+        className={`inline-flex items-center px-3 py-1 rounded-full ${styleClass}`}
+      >
+        <div
+          className="w-2 h-2 rounded-full mr-2"
+          style={{
+            backgroundColor: styleClass.includes("success")
+              ? "#27AE60"
+              : styleClass.includes("newText")
+              ? "#647787"
+              : "#FDC203",
+          }}
+        ></div>
+        <span>{statusText.charAt(0).toUpperCase() + statusText.slice(1)}</span>
+      </div>
+    );
+  }
+  return null;
+};
+
+function DebouncedInput({
+  value: initialValue,
+  onChange,
+  debounce = 500,
+  ...props
+}: {
+  value: string | number;
+  onChange: (value: string | number) => void;
+  debounce?: number;
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange">) {
+  const [value, setValue] = React.useState(initialValue);
 
   React.useEffect(() => {
-    if (typeof indeterminate === "boolean") {
-      ref.current.indeterminate = !rest.checked && indeterminate;
-    }
-  }, [ref, indeterminate]);
+    setValue(initialValue);
+  }, [initialValue]);
+
+  React.useEffect(() => {
+    const timeout = setTimeout(() => {
+      onChange(value);
+    }, debounce);
+
+    return () => clearTimeout(timeout);
+  }, [value]);
 
   return (
     <input
-      type="checkbox"
-      ref={ref}
-      className={className + " cursor-pointer h-5 w-5"}
-      {...rest}
+      {...props}
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
     />
   );
 }

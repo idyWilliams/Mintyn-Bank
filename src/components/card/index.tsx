@@ -30,8 +30,8 @@ const ProgressCard: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="flex flex-col gap-1">
+      <div className="bg-white rounded-md shadow-md p-6">
         <h3 className="text-lg font-semibold text-black mb-2">Orders</h3>
         <div className="w-full bg-warning rounded-full h-2 mb-2">
           <div
@@ -55,7 +55,7 @@ const ProgressCard: React.FC = () => {
           Total Orders: <span className="font-bold text-blue">{orderData.total}</span>
         </p>
       </div>
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="bg-white rounded-md shadow-md p-6">
         <h3 className="text-lg text-black font-semibold mb-2">Payments</h3>
         <div className="w-full bg-warning rounded-full h-2 mb-2">
           <div
