@@ -12,13 +12,19 @@ import {
 import ProgressCard from "../card";
 import ProductTable from "../table";
 import { mockData } from "@/utils";
+import MyChart from "../chart";
 
 const Dashboard: React.FC = () => {
   return (
     <>
       <GradientChart />
-      <div className="mt-3 w-full md:w-[40%]">
-        <ProgressCard />
+      <div className="block md:flex items-center mt-5 gap-2">
+        <div className="md:w-[60%]">
+          <MyChart />
+        </div>
+        <div className=" w-full md:w-[40%]">
+          <ProgressCard />
+        </div>
       </div>
       <div>
         <ProductTable productData={mockData} />
