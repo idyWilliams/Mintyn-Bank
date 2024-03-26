@@ -1,5 +1,4 @@
 "use client";
-// import { IProduct } from "@/app/dashboard/page";
 import React, {
   HTMLProps,
   useReducer,
