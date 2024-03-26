@@ -1,7 +1,6 @@
 "use client";
 // import { IProduct } from "@/app/dashboard/page";
 import React, {
-
   HTMLProps,
   useReducer,
   useState,
@@ -20,12 +19,12 @@ import {
 import { IoMdRefresh } from "react-icons/io";
 
 interface TableProps {
-  productData: IProduct[];
+  productData: any[];
 }
 
 const ProductTable: React.FC<TableProps> = ({ productData }) => {
   const rerender = useReducer(() => ({}), {})[1];
-  const columns = React.useMemo<ColumnDef<IProduct>[]>(
+  const columns = React.useMemo<ColumnDef<any>[]>(
     () => [
       {
         accessorKey: "Item Type",
@@ -79,9 +78,8 @@ const ProductTable: React.FC<TableProps> = ({ productData }) => {
     []
   );
 
-  const [data, setData] = useState<IProduct[]>([]);
+  const [data, setData] = useState<any[]>([]);
   const refreshData = () => setData(productData);
-
 
   const table = useReactTable({
     data,
@@ -127,7 +125,6 @@ const ProductTable: React.FC<TableProps> = ({ productData }) => {
             </button>
           </div>
         </div>
-
       </div>
       <table
         className="appearance-none bg-white min-w-full  rounded-md"
@@ -165,7 +162,6 @@ const ProductTable: React.FC<TableProps> = ({ productData }) => {
                 className="appearance-none my-4 border-t border-slate-200 "
                 key={row.id}
               >
-
                 {row.getVisibleCells().map((cell) => {
                   return (
                     <td
