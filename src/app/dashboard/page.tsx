@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AreaChart,
   Area,
@@ -11,9 +11,6 @@ import {
 } from "recharts";
 
 import { mockData } from "@/utils";
-// import MyChart from "@/components/chart";
-// import ProgressCard from "@/components/card";
-// import ProductTable from "@/components/table";
 
 import dynamic from "next/dynamic";
 
@@ -105,6 +102,10 @@ const cardData: CardData[] = [
 ];
 
 const GradientChart = () => {
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   return (
     <div className="grid grid-cols-1  md:grid-cols-2 md:gap-3 xl:grid-cols-4 gap-3  2xl:gap-7.5">
       {cardData.map((data, index) => (
@@ -120,34 +121,44 @@ const GradientChart = () => {
               {data.value.toLocaleString()}
             </p>
           </div>
-          <div className="h-16 ">
-            <ResponsiveContainer>
-              <AreaChart data={data.chartData}>
-                <defs>
-                  <linearGradient
-                    id={`gradient-${index}`}
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
-                    <stop offset="5%" stopColor="#0294FF73" stopOpacity={0.8} />
-                    <stop offset="95%" stopColor="#0296ff25" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <XAxis dataKey="name" hide />
-                <YAxis hide />
-                <Tooltip />
-                <Area
-                  type="linear"
-                  dataKey="value"
-                  strokeWidth={1}
-                  stroke="#1875F0"
-                  fillOpacity={1}
-                  fill={`url(#gradient-${index})`}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
+          <div className="h-16 w-full md:w-[60%]">
+            {isMounted && (
+              <ResponsiveContainer>
+                <AreaChart data={data.chartData}>
+                  <defs>
+                    <linearGradient
+                      id={`gradient-${index}`}
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop
+                        offset="5%"
+                        stopColor="#0294FF73"
+                        stopOpacity={0.8}
+                      />
+                      <stop
+                        offset="95%"
+                        stopColor="#0296ff25"
+                        stopOpacity={0}
+                      />
+                    </linearGradient>
+                  </defs>
+                  <XAxis dataKey="name" hide />
+                  <YAxis hide />
+                  <Tooltip />
+                  <Area
+                    type="linear"
+                    dataKey="value"
+                    strokeWidth={1}
+                    stroke="#1875F0"
+                    fillOpacity={1}
+                    fill={`url(#gradient-${index})`}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            )}
           </div>
         </div>
       ))}
