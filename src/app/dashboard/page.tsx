@@ -11,10 +11,22 @@ import {
 } from "recharts";
 
 import { mockData } from "@/utils";
-import MyChart from "@/components/chart";
-import ProgressCard from "@/components/card";
-import ProductTable from "@/components/table";
+// import MyChart from "@/components/chart";
+// import ProgressCard from "@/components/card";
+// import ProductTable from "@/components/table";
 
+import dynamic from "next/dynamic";
+
+const MyChart = dynamic(() => import("@/components/chart"), {
+  ssr: false,
+});
+
+const ProgressCard = dynamic(() => import("@/components/card"), {
+  ssr: false,
+});
+const ProductTable = dynamic(() => import("@/components/table"), {
+  ssr: false,
+});
 
 const Dashboard = () => {
   useEffect(() => {

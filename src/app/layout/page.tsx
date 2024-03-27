@@ -3,12 +3,14 @@ import Header from "@/components/header";
 import Sidebar from "@/components/sidebar";
 import React, { useState, ReactNode, useEffect } from "react";
 
+type LayoutProps = {
+  children?: React.ReactNode;
+};
+export default function DefaultLayout(props: LayoutProps) {
+    const { children} = {
+      ...props,
 
-export default function DefaultLayout({
-  children,
-}: {
-  children: ReactNode;
-}): JSX.Element {
+    };
   const [sidebarOpen, setSidebarOpen] = useState(false);
   useEffect(() => {
     if (typeof window !== "undefined") {
