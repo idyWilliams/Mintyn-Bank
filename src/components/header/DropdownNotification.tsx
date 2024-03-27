@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { LuBell } from "react-icons/lu";
@@ -50,7 +51,9 @@ const DropdownNotification = () => {
             notifying === false ? "hidden" : "inline"
           }`}
         >
-          <span className="absolute -z-1 inline-flex h-full w-full items-center justify-center text-white opacity-75">8</span>
+          <span className="absolute -z-1 inline-flex h-full w-full items-center justify-center text-white opacity-75">
+            8
+          </span>
         </span>
 
         <LuBell size={23} />
@@ -76,7 +79,7 @@ const DropdownNotification = () => {
             >
               <p className="text-sm">
                 <span className="text-black dark:text-white">
-                Complete Mintyn Test
+                  Complete Mintyn Test
                 </span>{" "}
                 Sint occaecat cupidatat non proident, sunt in culpa qui officia
                 deserunt mollit anim.
@@ -107,7 +110,7 @@ const DropdownNotification = () => {
             >
               <p className="text-sm">
                 <span className="text-black dark:text-white">
-                Completed by IDORENYIN
+                  Completed by IDORENYIN
                 </span>{" "}
                 of passages of Lorem Ipsum available, but the majority have
                 suffered

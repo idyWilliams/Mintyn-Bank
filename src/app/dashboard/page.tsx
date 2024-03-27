@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   AreaChart,
   Area,
@@ -9,12 +9,20 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import ProgressCard from "../card";
-import ProductTable from "../table";
-import { mockData } from "@/utils";
-import MyChart from "../chart";
 
-const Dashboard: React.FC = () => {
+import { mockData } from "@/utils";
+import MyChart from "@/components/chart";
+import ProgressCard from "@/components/card";
+import ProductTable from "@/components/table";
+
+
+const Dashboard = () => {
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      //This code is executed in the browser
+      console.log(window.innerWidth);
+    }
+  }, []);
   return (
     <>
       <GradientChart />

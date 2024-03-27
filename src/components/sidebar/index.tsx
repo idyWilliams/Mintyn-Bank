@@ -40,7 +40,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     return () => document.removeEventListener("click", clickHandler);
   });
 
-  // close if the esc key is pressed
+
   useEffect(() => {
     const keyHandler = ({ key }: KeyboardEvent) => {
       if (!sidebarOpen || key !== "Escape") return;
@@ -58,6 +58,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       document.querySelector("body")?.classList.remove("sidebar-expanded");
     }
   }, [sidebarExpanded]);
+    useEffect(() => {
+    if (typeof window !== "undefined") {
+      //This code is executed in the browser
+      console.log(window.innerWidth);
+    }
+  },[])
+
+   useEffect(() => {
+     if (typeof window !== "undefined") {
+       // Your client-side code that uses window goes here
+     }
+   }, []);
 
   return (
     <aside

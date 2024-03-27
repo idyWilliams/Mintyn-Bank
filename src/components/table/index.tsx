@@ -17,7 +17,6 @@ import {
   PaginationState,
 } from "@tanstack/react-table";
 import { IoIosSearch, IoMdRefresh } from "react-icons/io";
-import CustomSelect from "../custom";
 
 interface TableProps {
   productData: any[];
@@ -139,6 +138,18 @@ const ProductTable: React.FC<TableProps> = ({ productData }) => {
   useEffect(() => {
     setData(productData);
   }, [productData]);
+    useEffect(() => {
+    if (typeof window !== "undefined") {
+      //This code is executed in the browser
+      console.log(window.innerWidth);
+    }
+  },[])
+
+   useEffect(() => {
+     if (typeof window !== "undefined") {
+       // Your client-side code that uses window goes here
+     }
+   }, []);
 
   return (
     <div className="overflow-x-auto xxs:hidden md:block">

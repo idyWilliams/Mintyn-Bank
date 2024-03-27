@@ -1,23 +1,27 @@
-"use client";
-import React, { useState, ReactNode } from "react";
-import Header from "../header";
-import Sidebar from "../sidebar";
+'use client'
+import Header from "@/components/header";
+import Sidebar from "@/components/sidebar";
+import React, { useState, ReactNode, useEffect } from "react";
 
 
 export default function DefaultLayout({
   children,
 }: {
-  children: React.ReactNode;
-}) {
+  children: ReactNode;
+}): JSX.Element {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      console.log(window.innerWidth);
+    }
+  }, []);
+
   return (
     <>
       <div className="flex flex-col h-screen overflow-hidden">
-        {/* Header */}
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
         <div className="flex flex-1 overflow-hidden">
-          {/* Sidebar */}
           <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
           <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">

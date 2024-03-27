@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 interface SidebarLinkGroupProps {
   children: (handleClick: () => void, open: boolean) => ReactNode;
@@ -15,6 +15,17 @@ const SidebarLinkGroup = ({
   const handleClick = () => {
     setOpen(!open);
   };
+    useEffect(() => {
+      if (typeof window !== "undefined") {
+        //This code is executed in the browser
+        console.log(window.innerWidth);
+      }
+    }, []);
+   useEffect(() => {
+     if (typeof window !== "undefined") {
+       // Your client-side code that uses window goes here
+     }
+   }, []);
 
   return <li>{children(handleClick, open)}</li>;
 };

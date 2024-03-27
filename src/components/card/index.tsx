@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 
 interface OrderData {
   pending: number;
@@ -28,6 +29,11 @@ const ProgressCard: React.FC = () => {
   const calculateProgressPercentage = (value: number, total: number) => {
     return (value / total) * 100;
   };
+   useEffect(() => {
+     if (typeof window !== "undefined") {
+       // Your client-side code that uses window goes here
+     }
+   }, []);
 
   return (
     <div className="flex flex-col gap-1">
@@ -45,14 +51,18 @@ const ProgressCard: React.FC = () => {
           ></div>
         </div>
         <p className="mb-1 text-black font-light">
-          Pending Orders: <span className="font-bold text-warning">{orderData.pending}</span>
+          Pending Orders:{" "}
+          <span className="font-bold text-warning">{orderData.pending}</span>
         </p>
         <p className="mb-1 text-black font-light">
           Reconciled Orders:{" "}
-          <span className="font-bold text-success">{orderData.reconcilled}</span>
+          <span className="font-bold text-success">
+            {orderData.reconcilled}
+          </span>
         </p>
         <p className="mb-1 text-black font-light">
-          Total Orders: <span className="font-bold text-blue">{orderData.total}</span>
+          Total Orders:{" "}
+          <span className="font-bold text-blue">{orderData.total}</span>
         </p>
       </div>
       <div className="bg-white rounded-md shadow-md p-6">
@@ -70,14 +80,19 @@ const ProgressCard: React.FC = () => {
         </div>
         <p className="mb-1 text-black font-light">
           Un-reconcilled Payments:{" "}
-          <span className="font-bold text-warning">{paymentData.unReconcilled}</span>
+          <span className="font-bold text-warning">
+            {paymentData.unReconcilled}
+          </span>
         </p>
         <p className="mb-1 text-black font-light">
           Reconcilled Payments:{" "}
-          <span className="font-bold text-success">{paymentData.reconcilled}</span>
+          <span className="font-bold text-success">
+            {paymentData.reconcilled}
+          </span>
         </p>
         <p className="mb-1 text-black font-light">
-          Total Payments: <span className="font-bold text-blue">{paymentData.total}</span>
+          Total Payments:{" "}
+          <span className="font-bold text-blue">{paymentData.total}</span>
         </p>
       </div>
     </div>

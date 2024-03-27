@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -35,6 +36,12 @@ const DropdownMessage = () => {
     return () => document.removeEventListener("keydown", keyHandler);
   });
 
+
+   useEffect(() => {
+     if (typeof window !== "undefined") {
+       // Your client-side code that uses window goes here
+     }
+   }, []);
   return (
     <li className="relative">
       <Link
