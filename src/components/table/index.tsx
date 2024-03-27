@@ -35,7 +35,7 @@ const InitialsCircle: React.FC<InitialsCircleProps> = ({ initials }) => {
 };
 
 const ProductTable: React.FC<TableProps> = ({ productData }) => {
-  const rerender = useReducer(() => ({}), {})[1];
+
   const [globalFilter, setGlobalFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
 
@@ -105,7 +105,7 @@ const ProductTable: React.FC<TableProps> = ({ productData }) => {
   );
 
   const [data, setData] = useState<any[]>([]);
-  const refreshData = () => setData(productData);
+
 
   const table = useReactTable({
     data,
@@ -114,30 +114,63 @@ const ProductTable: React.FC<TableProps> = ({ productData }) => {
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
-    globalFilterFn: (row, columnIds) => {
-      const searchValue = globalFilter.toLowerCase();
-      //@ts-ignore
-      return columnIds.some((columnId: string) => {
-        const value = row.getValue(columnId);
-        return (
-          value !== undefined &&
-          //@ts-ignore
-          value.toString().toLowerCase().includes(searchValue)
-        );
-      });
-    },
+    // globalFilterFn: (row, columnIds) => {
+    //   const searchValue = globalFilter.toLowerCase();
+    //   //@ts-ignore
+    //   return columnIds.some((columnId: string) => {
+    //     const value = row.getValue(columnId);
+    //     return (
+    //       value !== undefined &&
+    //       //@ts-ignore
+    //       value.toString().toLowerCase().includes(searchValue)
+    //     );
+    //   });
+    // },
     debugTable: true,
     state: {
       globalFilter,
       pagination,
     },
     onPaginationChange: setPagination,
-    onGlobalFilterChange: setGlobalFilter,
+    // onGlobalFilterChange: setGlobalFilter,
   });
+
+const filteredData = React.useMemo(() => {
+  let result = productData;
+
+
+  if (globalFilter) {
+    const searchValue = globalFilter.toLowerCase();
+    result = result.filter((item) => {
+      for (const key in item) {
+        if (item[key].toString().toLowerCase().includes(searchValue)) {
+          return true;
+        }
+      }
+      return false;
+    });
+  }
+
+
+  if (statusFilter) {
+    result = result.filter(
+      (item) => item.status.toLowerCase() === statusFilter.toLowerCase()
+    );
+  }
+
+  return result;
+}, [productData, globalFilter, statusFilter]);
+
+
+  React.useEffect(() => {
+    setData(filteredData);
+  }, [filteredData]);
+
 
   useEffect(() => {
     setData(productData);
   }, [productData]);
+
     useEffect(() => {
     if (typeof window !== "undefined") {
       //This code is executed in the browser
@@ -188,7 +221,7 @@ const ProductTable: React.FC<TableProps> = ({ productData }) => {
               <button className="absolute left-0 top-1/2 text-[#787878] -translate-y-1/2 text-sm">
                 <IoIosSearch />
               </button>
-              <DebouncedInput
+              <input
                 type="text"
                 value={globalFilter || ""}
                 //@ts-ignore
@@ -333,35 +366,3 @@ const getStatusBlock = (statusText: string) => {
   return null;
 };
 
-function DebouncedInput({
-  value: initialValue,
-  onChange,
-  debounce = 500,
-  ...props
-}: {
-  value: string | number;
-  onChange: (value: string | number) => void;
-  debounce?: number;
-} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange">) {
-  const [value, setValue] = React.useState(initialValue);
-
-  React.useEffect(() => {
-    setValue(initialValue);
-  }, [initialValue]);
-
-  React.useEffect(() => {
-    const timeout = setTimeout(() => {
-      onChange(value);
-    }, debounce);
-
-    return () => clearTimeout(timeout);
-  }, [value]);
-
-  return (
-    <input
-      {...props}
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-    />
-  );
-}
